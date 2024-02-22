@@ -18,7 +18,7 @@ app.use((req, res, next) => {
   next();
 });
 app.use(express.json());
-app.use(cors({ credentials: true, origin: "https://obrazovdom.com/" }));
+app.use(cors({ credentials: true, origin: "https://obrazovdom.com" }));
 //credentials: true - много важно!
 app.use(cookieParser());
 
