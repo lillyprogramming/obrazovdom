@@ -10,15 +10,19 @@ import cors from "cors";
 import multer from "multer";
 //multer е за качване и запазване на изображението в базата данни. Нужно е да се конфигурира и в бакенда
 import cookieParser from "cookie-parser";
+import dotenv from "dotenv";
+dotenv.config();
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Credentials", true);
   next();
 });
 app.use(express.json());
-app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
+app.use(cors({ credentials: true, origin: "https://obrazovdom.com/" }));
 //credentials: true - много важно!
 app.use(cookieParser());
+
+const PORT = process.env.PORT || 8800;
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -43,6 +47,6 @@ app.use("/api/todos", todoRoutes);
 app.use("/api/grocery", groceryRoutes);
 app.use("/api/comments", commentRoutes);
 
-app.listen(8800, () => {
+app.listen(PORT, () => {
   console.log("Your server is running.");
 });
