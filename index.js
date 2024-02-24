@@ -13,12 +13,15 @@ import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 dotenv.config();
 
+// const org = "https://obrazovdom.com";
+const org = "http://localhost:3000";
+
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Credentials", true);
   next();
 });
 app.use(express.json());
-app.use(cors({ credentials: true, origin: "https://obrazovdom.com" }));
+app.use(cors({ credentials: true, origin: org}));
 //credentials: true - много важно!
 app.use(cookieParser());
 
