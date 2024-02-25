@@ -19,6 +19,8 @@ const org = "https://obrazovdom.com";
 // const org = "http://localhost:3000";
 
 app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "https://my-frontend.com");
+  res.header("Access-Control-Allow-Methods", "GET,HEAD,PUT,PATCH,POST,DELETE");
   res.header("Access-Control-Allow-Credentials", true);
   next();
 });
