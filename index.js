@@ -21,7 +21,7 @@ app.use((req, res, next) => {
   next();
 });
 app.use(express.json());
-app.use(cors({ credentials: true, origin: org}));
+app.use(cors({ credentials: true, origin: org }));
 //credentials: true - много важно!
 app.use(cookieParser());
 
@@ -36,7 +36,7 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage: storage} });
+const upload = multer({ storage: storage });
 
 app.post("/api/upload", upload.single("file"), (req, res) => {
   const file = req.file;
