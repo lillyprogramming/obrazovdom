@@ -36,7 +36,15 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage: storage });
+const fileFilter = (req, file, cb) => {
+    if (file.mimetype.startsWith('image/')) {
+        cb(null, true);
+    } else {
+        cb(new Error('Only images are allowed!'), false);
+    }
+};
+
+const upload = multer({ storage: storage, fileFilter: fileFilter } });
 
 app.post("/api/upload", upload.single("file"), (req, res) => {
   const file = req.file;
