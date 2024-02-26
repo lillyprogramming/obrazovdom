@@ -12,6 +12,11 @@ import multer from "multer";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 dotenv.config();
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const org = "https://obrazovdom.com";
 // const org = "http://localhost:3000";
@@ -29,7 +34,8 @@ const PORT = process.env.PORT || 8800;
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "../upload");
+    const uploadPath = join(__dirname, '../public_html/upload');
+    cb(null, uploadPath);
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + file.originalname);
