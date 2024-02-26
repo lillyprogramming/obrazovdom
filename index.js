@@ -35,6 +35,7 @@ const PORT = process.env.PORT || 8800;
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     const uploadPath = join(__dirname, '../public_html/upload');
+    console.log(uploadPath);
     cb(null, uploadPath);
   },
   filename: function (req, file, cb) {
