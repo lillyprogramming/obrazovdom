@@ -33,18 +33,6 @@ const upload = multer({
 app.post('/api/upload', upload.single('file'), async (req, res) => {
   const { originalname, buffer } = req.file;
 
-
-
-  const corsConfiguration = {
-  CORSRules: [
-    {
-      AllowedHeaders: ['*'],
-      AllowedMethods: ['GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE'],
-      AllowedOrigins: ['http://localhost:3000'], // Change this to your specific frontend domain
-      ExposeHeaders: [],
-    },
-  ],
-};
   const bucketName = 'cyclic-tiny-ruby-bunny-wear-eu-central-1';
 
   const params = {
@@ -52,37 +40,19 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
     Key: `${Date.now()}-${originalname}`,
     Body: buffer,
   };
-
-const publicBucketPolicy = {
-  Version: '2012-10-17',
-  Statement: [
-    {
-      Effect: 'Allow',
-      Principal: '*',
-      Action: 's3:GetObject',
-      Resource: `arn:aws:s3:::${bucketName}/*`,
-    },
-  ],
-};
-    const bucketParams = {
-    Bucket: bucketName,
-      CORSConfiguration: corsConfiguration,
-      Policy: JSON.stringify(publicBucketPolicy),
-  }
-s3.putBucketCors(bucketParams, (err, data) => {
-  if (err) {
-    console.error('Error updating CORS configuration:', err);
-  } else {
-    console.log('CORS configuration updated successfully:', data);
-  }
-});
   
   try {
     // Use AWS SDK v3 to upload to S3
-    const command = new PutObjectCommand(params);
-    await s3.send(command);
+    // const command = new PutObjectCommand(params);
+    // await s3.send(command);
 
-    console.log(`https://${params.Bucket}.s3.amazonaws.com/${params.Key}`);
+    await s3.putObject({
+            Body: JSON.stringify({key:"value"}),
+            Bucket: "cyclic-tiny-ruby-bunny-wear-eu-central-1",
+            Key: `${Date.now()}-${originalname}`,
+        }).promise()
+    
+    // console.log(`https://${params.Bucket}.s3.amazonaws.com/${params.Key}`);
 
     // Save image metadata to the database (posts table)
     // await pool.execute('INSERT INTO posts (filename, url) VALUES (?, ?)', [
@@ -91,6 +61,14 @@ s3.putBucketCors(bucketParams, (err, data) => {
     // ]);
 
     // res.json({ message: `https://${params.Bucket}.s3.amazonaws.com/${params.Key}`});
+
+    let my_file = await s3.getObject({
+            Bucket: "cyclic-tiny-ruby-bunny-wear-eu-central-1",
+            Key: "some_files/my_file.json",
+        }).promise()
+
+  console.log(JSON.parse(my_file))
+    
       res.status(200).json(`https://${params.Bucket}.s3.amazonaws.com/${params.Key}`);
   } catch (error) {
     console.error('Error uploading file:', error);
