@@ -4,7 +4,9 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export const getFamily = (req, res) => {
-  const token = req.cookies.accessToken;
+  // const token = req.cookies.accessToken;
+  const token =
+    req.headers.authorization && req.headers.authorization.split(" ")[1];
   if (!token) return res.status(401).json("Not logged in!");
 
   jwt.verify(token, process.env.JWT_SECRET_KEY, (err, userInfo) => {
@@ -22,7 +24,9 @@ export const getFamily = (req, res) => {
 
 //отделна функция от getFamily за улеснение при фронт-енда
 export const getFamilyMembers = (req, res) => {
-  const token = req.cookies.accessToken;
+  // const token = req.cookies.accessToken;
+  const token =
+    req.headers.authorization && req.headers.authorization.split(" ")[1];
   if (!token) return res.status(401).json("Not logged in!");
 
   jwt.verify(token, process.env.JWT_SECRET_KEY, (err, userInfo) => {
@@ -39,7 +43,9 @@ export const getFamilyMembers = (req, res) => {
 };
 
 export const deleteFamMember = (req, res) => {
-  const token = req.cookies.accessToken;
+  // const token = req.cookies.accessToken;
+  const token =
+    req.headers.authorization && req.headers.authorization.split(" ")[1];
   if (!token) return res.status(401).json("Not logged in!");
 
   jwt.verify(token, process.env.JWT_SECRET_KEY, (err, userInfo) => {
@@ -55,7 +61,9 @@ export const deleteFamMember = (req, res) => {
 };
 
 export const updateFamily = (req, res) => {
-  const token = req.cookies.accessToken;
+  // const token = req.cookies.accessToken;
+  const token =
+    req.headers.authorization && req.headers.authorization.split(" ")[1];
   if (!token) return res.status(401).json("Not logged in!");
 
   jwt.verify(token, process.env.JWT_SECRET_KEY, (err, userInfo) => {
@@ -73,7 +81,9 @@ export const updateFamily = (req, res) => {
 };
 
 export const giveStardom = (req, res) => {
-  const token = req.cookies.accessToken;
+  // const token = req.cookies.accessToken;
+  const token =
+    req.headers.authorization && req.headers.authorization.split(" ")[1];
   if (!token) return res.status(401).json("Not logged in!");
 
   jwt.verify(token, process.env.JWT_SECRET_KEY, (err, userInfo) => {
