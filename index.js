@@ -9,71 +9,31 @@ import groceryRoutes from "./routes/grocery.js";
 import cors from "cors";
 import multer from "multer";
 //multer е за качване и запазване на изображението в базата данни. Нужно е да се конфигурира и в бакенда
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import cookieParser from "cookie-parser";
-
-const s3 = new S3Client();
-
-// const org = "https://obrazovdom.com";
-const org = "http://localhost:3000";
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Credentials", true);
   next();
 });
 app.use(express.json());
-app.use(cors({ credentials: true, origin:  org  }));
+app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 //credentials: true - много важно!
 app.use(cookieParser());
 
-const upload = multer({
-  storage: multer.memoryStorage(),
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "../client/public/upload");
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + file.originalname);
+  },
 });
 
-app.post('/api/upload', upload.single('file'), async (req, res) => {
-  const { originalname, buffer } = req.file;
+const upload = multer({ storage: storage });
 
-  const bucketName = 'cyclic-tiny-ruby-bunny-wear-eu-central-1';
-
-  const params = {
-    Bucket: bucketName,
-    Key: `${Date.now()}-${originalname}`,
-    Body: buffer,
-  };
-  
-  try {
-    // Use AWS SDK v3 to upload to S3
-    // const command = new PutObjectCommand(params);
-    // await s3.send(command);
-
-    await s3.putObject({
-            Body: JSON.stringify({key:"value"}),
-            Bucket: "cyclic-tiny-ruby-bunny-wear-eu-central-1",
-            Key: `${Date.now()}-${originalname}`,
-        }).promise()
-    
-    // console.log(`https://${params.Bucket}.s3.amazonaws.com/${params.Key}`);
-
-    // Save image metadata to the database (posts table)
-    // await pool.execute('INSERT INTO posts (filename, url) VALUES (?, ?)', [
-    //   params.Key,
-    //   `https://${params.Bucket}.s3.amazonaws.com/${params.Key}`,
-    // ]);
-
-    // res.json({ message: `https://${params.Bucket}.s3.amazonaws.com/${params.Key}`});
-
-    let my_file = await s3.getObject({
-            Bucket: "cyclic-tiny-ruby-bunny-wear-eu-central-1",
-            Key: "some_files/my_file.json",
-        }).promise()
-
-  console.log(JSON.parse(my_file))
-    
-      res.status(200).json(`https://${params.Bucket}.s3.amazonaws.com/${params.Key}`);
-  } catch (error) {
-    console.error('Error uploading file:', error);
-    res.status(500).json({ error: 'Failed to upload file' });
-  }
+app.post("/api/upload", upload.single("file"), (req, res) => {
+  const file = req.file;
+  res.status(200).json(file.filename);
 });
 
 app.use("/api/auth", authRoutes);
