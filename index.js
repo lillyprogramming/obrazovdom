@@ -45,15 +45,31 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
     },
   ],
 };
+  const bucketName = 'cyclic-tiny-ruby-bunny-wear-eu-central-1';
+
   const params = {
-    Bucket: 'cyclic-tiny-ruby-bunny-wear-eu-central-1',
+    Bucket: bucketName,
     Key: `${Date.now()}-${originalname}`,
     Body: buffer,
-    ContentType: 'image/jpeg',
-      CORSConfiguration: corsConfiguration,
   };
 
-s3.putBucketCors(params, (err, data) => {
+const publicBucketPolicy = {
+  Version: '2012-10-17',
+  Statement: [
+    {
+      Effect: 'Allow',
+      Principal: '*',
+      Action: 's3:GetObject',
+      Resource: `arn:aws:s3:::${bucketName}/*`,
+    },
+  ],
+};
+    const bucketParams = {
+    Bucket: bucketName,
+      CORSConfiguration: corsConfiguration,
+      Policy: JSON.stringify(publicBucketPolicy),
+  }
+s3.putBucketCors(bucketParams, (err, data) => {
   if (err) {
     console.error('Error updating CORS configuration:', err);
   } else {
