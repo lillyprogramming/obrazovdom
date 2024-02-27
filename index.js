@@ -54,7 +54,8 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
     //   `https://${params.Bucket}.s3.amazonaws.com/${params.Key}`,
     // ]);
 
-    res.json({ message: `https://${params.Bucket}.s3.amazonaws.com/${params.Key}`});
+    // res.json({ message: `https://${params.Bucket}.s3.amazonaws.com/${params.Key}`});
+      res.status(200).json(`https://${params.Bucket}.s3.amazonaws.com/${params.Key}`);
   } catch (error) {
     console.error('Error uploading file:', error);
     res.status(500).json({ error: 'Failed to upload file' });
