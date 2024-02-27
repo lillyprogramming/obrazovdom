@@ -9,6 +9,7 @@ import groceryRoutes from "./routes/grocery.js";
 import cors from "cors";
 import multer from "multer";
 //multer е за качване и запазване на изображението в базата данни. Нужно е да се конфигурира и в бакенда
+import aws from 'aws-sdk';
 import cookieParser from "cookie-parser";
 
 const org = "https://obrazovdom.com";
