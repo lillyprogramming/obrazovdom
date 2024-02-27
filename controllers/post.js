@@ -39,11 +39,12 @@ export const addPost = (req, res) => {
 
     const q = "INSERT INTO posts (descr, img, userId, created_date) VALUES (?)";
 
-    const base64Image = req.body.img.split(';base64,').pop();
+    // const base64Image = req.body.img.split(';base64,').pop();
     
     const values = [
       req.body.descr,
-      base64Image,
+      // base64Image,
+      req.body.img,
       userInfo.id,
       moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
     ];
