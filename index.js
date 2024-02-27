@@ -44,17 +44,17 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
   try {
     // Use AWS SDK v3 to upload to S3
     const command = new PutObjectCommand(params);
-    const result = await s3.send(command);
+    await s3.send(command);
 
-    console.log('File uploaded successfully:', result.Key);
+    console.log('File uploaded successfully:', params.Key);
 
     // Save image metadata to the database (posts table)
     // await pool.execute('INSERT INTO posts (filename, url) VALUES (?, ?)', [
-    //   result.Key,
-    //   result.Location, // Use result.Location for the S3 object URL
+    //   params.Key,
+    //   `https://${params.Bucket}.s3.amazonaws.com/${params.Key}`,
     // ]);
 
-    res.json({ message: 'File uploaded successfully', imageUrl: result.Location });
+    res.json({ message: `https://${params.Bucket}.s3.amazonaws.com/${params.Key}`});
   } catch (error) {
     console.error('Error uploading file:', error);
     res.status(500).json({ error: 'Failed to upload file' });
