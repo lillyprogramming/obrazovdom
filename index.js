@@ -27,9 +27,26 @@ app.use(cookieParser());
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-app.post("/api/upload", upload.single("file"), (req, res) => {
-  const file = req.file;
-  res.status(200).json(file.filename);
+app.post('/posts', upload.single('image'), async (req, res) => {
+    try {
+        const { descr, img } = req.body;
+        
+        // Assuming img is a base64-encoded string
+        const base64Image = img.split(';base64,').pop();
+
+        // Insert the data into your MySQL database
+        const sql = 'INSERT INTO images (description, base64data) VALUES (?, ?)';
+        connection.query(sql, [descr, base64Image], (err, result) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).send('Internal Server Error');
+            }
+            res.status(200).send('Image uploaded successfully');
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
 });
 
 app.use("/api/auth", authRoutes);
