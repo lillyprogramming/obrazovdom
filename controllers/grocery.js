@@ -4,7 +4,9 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export const getToBuys = (req, res) => {
-  const token = req.cookies.accessToken;
+  // const token = req.cookies.accessToken;
+  const token =
+    req.headers.authorization && req.headers.authorization.split(" ")[1];
   if (!token) {
     return res.status(401).json("Not logged in!");
   }
@@ -21,7 +23,9 @@ export const getToBuys = (req, res) => {
 };
 
 export const addToBuy = (req, res) => {
-  const token = req.cookies.accessToken;
+  // const token = req.cookies.accessToken;
+  const token =
+    req.headers.authorization && req.headers.authorization.split(" ")[1];
   if (!token) return res.status(401).json("Not logged in!");
 
   jwt.verify(token, process.env.JWT_SECRET_KEY, (err, userInfo) => {
@@ -40,13 +44,15 @@ export const addToBuy = (req, res) => {
 };
 
 export const deleteToBuy = (req, res) => {
-  const token = req.cookies.accessToken;
+  // const token = req.cookies.accessToken;
+  const token =
+    req.headers.authorization && req.headers.authorization.split(" ")[1];
   if (!token) return res.status(401).json("Not logged in!");
 
   jwt.verify(token, process.env.JWT_SECRET_KEY, (err, userInfo) => {
     if (err) return res.status(403).json("Token not valid!");
     const q = "DELETE FROM grocery WHERE id=?";
-    
+
     db.query(q, [req.params.id], (err, data) => {
       if (err) return res.status(500).json(err);
       return res.status(200).json("Grocery has been deleted");
