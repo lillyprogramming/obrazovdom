@@ -3,6 +3,9 @@ import jwt from "jsonwebtoken";
 import moment from "moment";
 import dotenv from "dotenv";
 dotenv.config();
+// const multer = require('multer');
+// const storage = multer.memoryStorage();
+// const upload = multer({ storage: storage });
 
 export const getPosts = (req, res) => {
   // const token = req.cookies.accessToken;
@@ -36,9 +39,11 @@ export const addPost = (req, res) => {
 
     const q = "INSERT INTO posts (descr, img, userId, created_date) VALUES (?)";
 
+    const base64Image = req.body.img.split(';base64,').pop();
+    
     const values = [
       req.body.descr,
-      req.body.img,
+      base64Image,
       userInfo.id,
       moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
     ];
