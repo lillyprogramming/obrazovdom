@@ -14,8 +14,8 @@ import cookieParser from "cookie-parser";
 
 const s3 = new S3Client();
 
-const org = "https://obrazovdom.com";
-// const org = "http://localhost:3000";
+// const org = "https://obrazovdom.com";
+const org = "http://localhost:3000";
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Credentials", true);
