@@ -49,10 +49,10 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
     console.log('File uploaded successfully:', result.Key);
 
     // Save image metadata to the database (posts table)
-    await pool.execute('INSERT INTO posts (filename, url) VALUES (?, ?)', [
-      result.Key,
-      result.Location, // Use result.Location for the S3 object URL
-    ]);
+    // await pool.execute('INSERT INTO posts (filename, url) VALUES (?, ?)', [
+    //   result.Key,
+    //   result.Location, // Use result.Location for the S3 object URL
+    // ]);
 
     res.json({ message: 'File uploaded successfully', imageUrl: result.Location });
   } catch (error) {
