@@ -17,22 +17,14 @@ app.use((req, res, next) => {
 });
 app.use(express.json());
 
-const org = "https://obrazovdom.com";
-// const org = "http://localhost:3000";
+// const org = "https://obrazovdom.com";
+const org = "http://localhost:3000";
 
 app.use(cors({ credentials: true, origin: org }));
 //credentials: true - много важно!
 app.use(cookieParser());
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "../client/public/upload");
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + file.originalname);
-  },
-});
-
+const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 app.post("/api/upload", upload.single("file"), (req, res) => {
