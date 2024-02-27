@@ -46,7 +46,7 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
     const command = new PutObjectCommand(params);
     await s3.send(command);
 
-    console.log('File uploaded successfully:', params.Key);
+    console.log(`https://${params.Bucket}.s3.amazonaws.com/${params.Key}`);
 
     // Save image metadata to the database (posts table)
     // await pool.execute('INSERT INTO posts (filename, url) VALUES (?, ?)', [
