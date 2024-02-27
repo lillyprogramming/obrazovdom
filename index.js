@@ -26,6 +26,10 @@ app.use(cors({ credentials: true, origin:  org  }));
 //credentials: true - много важно!
 app.use(cookieParser());
 
+const upload = multer({
+  storage: multer.memoryStorage(),
+});
+
 app.post('/api/upload', upload.single('file'), async (req, res) => {
   const { originalname, buffer } = req.file;
 
