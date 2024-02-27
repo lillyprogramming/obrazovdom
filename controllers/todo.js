@@ -4,7 +4,9 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export const getTodos = (req, res) => {
-  const token = req.cookies.accessToken;
+  // const token = req.cookies.accessToken;
+  const token =
+    req.headers.authorization && req.headers.authorization.split(" ")[1];
   if (!token) {
     return res.status(401).json("Not logged in!");
   }
@@ -33,7 +35,9 @@ export const getTodos = (req, res) => {
 };
 
 export const getCalTodos = (req, res) => {
-  const token = req.cookies.accessToken;
+  // const token = req.cookies.accessToken;
+  const token =
+    req.headers.authorization && req.headers.authorization.split(" ")[1];
   if (!token) {
     return res.status(401).json("Not logged in!");
   }
@@ -62,7 +66,9 @@ export const getCalTodos = (req, res) => {
 };
 
 export const getParentTodos = (req, res) => {
-  const token = req.cookies.accessToken;
+  // const token = req.cookies.accessToken;
+  const token =
+    req.headers.authorization && req.headers.authorization.split(" ")[1];
   if (!token) {
     return res.status(401).json("Not logged in!");
   }
@@ -87,7 +93,9 @@ export const getParentTodos = (req, res) => {
 //имам три различни get функции, се нуждая от различни данни за различните страници
 
 export const addTodo = (req, res) => {
-  const token = req.cookies.accessToken;
+  // const token = req.cookies.accessToken;
+  const token =
+    req.headers.authorization && req.headers.authorization.split(" ")[1];
   if (!token) return res.status(401).json("Not logged in!");
 
   jwt.verify(token, process.env.JWT_SECRET_KEY, (err, userInfo) => {
@@ -115,7 +123,9 @@ export const addTodo = (req, res) => {
 };
 
 export const deleteTodo = (req, res) => {
-  const token = req.cookies.accessToken;
+  // const token = req.cookies.accessToken;
+  const token =
+    req.headers.authorization && req.headers.authorization.split(" ")[1];
   if (!token) return res.status(401).json("Not logged in!");
 
   jwt.verify(token, process.env.JWT_SECRET_KEY, (err, userInfo) => {
@@ -129,7 +139,9 @@ export const deleteTodo = (req, res) => {
 };
 
 export const updateTodo = (req, res) => {
-  const token = req.cookies.accessToken;
+  // const token = req.cookies.accessToken;
+  const token =
+    req.headers.authorization && req.headers.authorization.split(" ")[1];
   if (!token) return res.status(401).json("Not logged in!");
 
   jwt.verify(token, process.env.JWT_SECRET_KEY, (err, userInfo) => {
@@ -154,7 +166,9 @@ export const updateTodo = (req, res) => {
 };
 
 export const updateCalTodo = (req, res) => {
-  const token = req.cookies.accessToken;
+  // const token = req.cookies.accessToken;
+  const token =
+    req.headers.authorization && req.headers.authorization.split(" ")[1];
   if (!token) return res.status(401).json("Not logged in!");
 
   jwt.verify(token, process.env.JWT_SECRET_KEY, (err, userInfo) => {
