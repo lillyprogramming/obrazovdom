@@ -33,14 +33,34 @@ const upload = multer({
 app.post('/api/upload', upload.single('file'), async (req, res) => {
   const { originalname, buffer } = req.file;
 
+
+
+  const corsConfiguration = {
+  CORSRules: [
+    {
+      AllowedHeaders: ['*'],
+      AllowedMethods: ['GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE'],
+      AllowedOrigins: ['http://localhost:3000'], // Change this to your specific frontend domain
+      ExposeHeaders: [],
+    },
+  ],
+};
   const params = {
     Bucket: 'cyclic-tiny-ruby-bunny-wear-eu-central-1',
     Key: `${Date.now()}-${originalname}`,
     Body: buffer,
     ContentType: 'image/jpeg',
+      CORSConfiguration: corsConfiguration,
   };
 
-
+s3.putBucketCors(params, (err, data) => {
+  if (err) {
+    console.error('Error updating CORS configuration:', err);
+  } else {
+    console.log('CORS configuration updated successfully:', data);
+  }
+});
+  
   try {
     // Use AWS SDK v3 to upload to S3
     const command = new PutObjectCommand(params);
