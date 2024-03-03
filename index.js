@@ -18,9 +18,9 @@ app.use((req, res, next) => {
 app.use(express.json());
 
 // const org = "https://obrazovdom.com";
-// const org = "http://localhost:3000";
+const org = "http://localhost:3000";
 
-app.use(cors({ credentials: true, origin: ["https://obrazovdom.com", "http://localhost:3000"] }));
+app.use(cors({ credentials: true, origin: org}));
 //credentials: true - много важно!
 app.use(cookieParser());
 
