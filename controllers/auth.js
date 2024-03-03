@@ -134,24 +134,24 @@ export const logIn = (req, res) => {
 
     const { password, ...others } = data[0];
 
-    // res
-    //   .cookie("accessToken", token, {
-    //     httpOnly: true,
-    //     secure: true,
-    //     sameSite: "none",
-    //   })
-    //   .status(200)
-    //   .json(others);
+    res
+      .cookie("accessToken", token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+      })
+      .status(200)
+      .json(others);
     res.status(200).json({ token, user: others });
   });
 };
 
-// export const logOut = (req, res) => {
-//   res
-//     .clearCookie("accessToken", {
-//       secure: true,
-//       sameSite: "none",
-//     })
-//     .status(200)
-//     .json("User has been logged out.");
-// };
+export const logOut = (req, res) => {
+  res
+    .clearCookie("accessToken", {
+      secure: true,
+      sameSite: "none",
+    })
+    .status(200)
+    .json("User has been logged out.");
+};
