@@ -2,6 +2,7 @@ import { db } from "../connect.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import { serialize } from "cookie";
 dotenv.config();
 
 export const register = (req, res) => {
@@ -134,25 +135,32 @@ export const logIn = (req, res) => {
 
     const { password, ...others } = data[0];
 
-    res
-      .cookie("accessToken", token, {
-        httpOnly: true,
-        secure: true,
-        sameSite: "none",
-    partitioned: true,
-      })
-      .status(200)
-      .json(others);
-    res.status(200).json({ token, user: others });
+    const cookieOptions = {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      partitioned: true,
+      path: "/api",
+    };
+    const serializedToken = serialize("accessToken", token, cookieOptions);
+
+    res.setHeader("Set-Cookie", serializedToken);
+    res.status(200).json(others);
   });
 };
 
 export const logOut = (req, res) => {
-  res
-    .clearCookie("accessToken", {
-      secure: true,
-      sameSite: "none",
-    })
-    .status(200)
-    .json("User has been logged out.");
+  // Clear the access token cookie
+  const cookieOptions = {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+    expires: new Date(0), // Set the expiration date in the past to delete the cookie
+    partitioned: true,
+  };
+
+  const serializedToken = serialize("accessToken", "", cookieOptions);
+
+  res.setHeader("Set-Cookie", serializedToken);
+  res.status(200).json("Logout successful");
 };
