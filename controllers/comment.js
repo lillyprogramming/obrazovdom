@@ -16,9 +16,9 @@ export const getComments = (req, res) => {
 };
 
 export const addComment = (req, res) => {
-  // const token = req.cookies.accessToken;
-  const token =
-    req.headers.authorization && req.headers.authorization.split(" ")[1];
+  const token = req.cookies.accessToken;
+  // const token =
+  //   req.headers.authorization && req.headers.authorization.split(" ")[1];
   if (!token) return res.status(401).json("Not logged in!");
 
   jwt.verify(token, process.env.JWT_SECRET_KEY, (err, userInfo) => {
@@ -44,9 +44,9 @@ export const addComment = (req, res) => {
 };
 
 export const deleteComment = (req, res) => {
-  // const token = req.cookies.accessToken;
-  const token =
-    req.headers.authorization && req.headers.authorization.split(" ")[1];
+  const token = req.cookies.accessToken;
+  // const token =
+  //   req.headers.authorization && req.headers.authorization.split(" ")[1];
   if (!token) return res.status(401).json("Not logged in!");
 
   jwt.verify(token, process.env.JWT_SECRET_KEY, (err, userInfo) => {
