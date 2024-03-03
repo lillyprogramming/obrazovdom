@@ -10,7 +10,7 @@ export const register = (req, res) => {
 
   db.query(q, [req.body.email], (err, data) => {
     if (err) return res.status(500).json(err);
-    if (data.length) return res.status(409).json("User already exists!");
+    if (data.length) return res.status(409).json("Вече съществува потребител с този имейл адрес!");
 
     const salt = bcrypt.genSaltSync(10);
     const hashedPassword = bcrypt.hashSync(req.body.password, salt);
@@ -27,7 +27,7 @@ export const register = (req, res) => {
     if (!family_name && !family_secret_code) {
       return res
         .status(400)
-        .json("Either family_name or family_secret_code must be provided.");
+        .json("Моля въведете или домакински ключ или име на домакинството!");
     }
     if (family_name) {
       //функция за генериране на случаен домакински ключ
@@ -68,7 +68,7 @@ export const register = (req, res) => {
         if (!familyData.length)
           return res
             .status(404)
-            .json("Family not found with the provided secret code.");
+            .json("Няма домакинство с този домакински ключ!");
 
         const familyId = familyData[0].family_id;
         insertUserAndConnection(
@@ -116,14 +116,14 @@ export const logIn = (req, res) => {
 
   db.query(q, [req.body.email], (err, data) => {
     if (err) return res.status(500).json(err);
-    if (data.length === 0) return res.status(404).json("User not found");
+    if (data.length === 0) return res.status(404).json("Няма потребител с този имейл адрес!");
 
     const checkPassword = bcrypt.compareSync(
       req.body.password,
       data[0].password
     );
 
-    if (!checkPassword) return res.status(400).json("Wrong password for email");
+    if (!checkPassword) return res.status(400).json("Грешна парола за този имейл адрес!");
 
     //стойностите, които са ми най-важни, ги пазя в httpOnly бисквита
     const payload = {
