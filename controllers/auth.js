@@ -143,7 +143,6 @@ export const logIn = (req, res) => {
       path: "/api",
     };
     const serializedToken = serialize("accessToken", token, cookieOptions);
-      console.log("Setting accessToken cookie...");
 
     res.setHeader("Set-Cookie", serializedToken);
     res.status(200).json(others);
