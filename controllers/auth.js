@@ -139,6 +139,7 @@ export const logIn = (req, res) => {
         httpOnly: true,
         secure: true,
         sameSite: "none",
+        Partitioned
       })
       .status(200)
       .json(others);
