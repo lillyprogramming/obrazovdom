@@ -145,7 +145,7 @@ export const logIn = (req, res) => {
     const serializedToken = serialize("accessToken", token, cookieOptions);
 
     res.setHeader("Set-Cookie", serializedToken);
-    // res.status(200).json(others);
+    res.status(200).json(others);
   });
 };
 
