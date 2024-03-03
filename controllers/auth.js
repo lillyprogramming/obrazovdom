@@ -140,7 +140,7 @@ export const logIn = (req, res) => {
       secure: true,
       sameSite: "none",
       partitioned: true,
-      // path: "/api",
+      path: "/",
     };
     const serializedToken = serialize("accessToken", token, cookieOptions);
       console.log("Setting accessToken cookie...");
