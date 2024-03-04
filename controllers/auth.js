@@ -167,8 +167,6 @@ export const logOut = (req, res) => {
     httpOnly: true,
     secure: true,
     sameSite: "none",
-    partitioned: true,
-    path: "/api",
   });
 
   res.status(200).json("Logout successful");
