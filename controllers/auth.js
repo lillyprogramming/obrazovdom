@@ -150,17 +150,24 @@ export const logIn = (req, res) => {
 };
 
 export const logOut = (req, res) => {
-  // Clear the access token cookie
-  const cookieOptions = {
+  // const cookieOptions = {
+  //   httpOnly: true,
+  //   secure: true,
+  //   sameSite: "none",
+  //   expires: new Date(0), 
+  //   partitioned: true,
+  // };
+
+  // const serializedToken = serialize("accessToken", "", cookieOptions);
+
+  // res.setHeader("Set-Cookie", serializedToken);
+  // res.status(200).json("Logout successful");
+
+    res.clearCookie("accessToken", {
     httpOnly: true,
     secure: true,
     sameSite: "none",
-    expires: new Date(0), // Set the expiration date in the past to delete the cookie
-    partitioned: true,
-  };
+  });
 
-  const serializedToken = serialize("accessToken", "", cookieOptions);
-
-  res.setHeader("Set-Cookie", serializedToken);
   res.status(200).json("Logout successful");
 };
